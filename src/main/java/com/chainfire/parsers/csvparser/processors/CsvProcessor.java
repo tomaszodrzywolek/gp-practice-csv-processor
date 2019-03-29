@@ -22,9 +22,14 @@ public class CsvProcessor {
         for (CSVRecord practice : csvParser) {
             RecordResult recordResult = recordProcessor.process(practice);
 
-            if (recordResult != null && recordResult.isPopulated()) {
-                results.addPractice(recordResult.getPractice());
-                results.addLocation(recordResult.getLocation());
+            if (recordResult != null) {
+                if (recordResult.isSuccess()) {
+                    results.addPractice(recordResult.getPractice());
+                    results.addLocation(recordResult.getLocation());
+                } else {
+                    results.addFailure(recordResult.getPractice());
+                }
+
             }
         }
 

@@ -10,7 +10,7 @@ class ResourcesCsvSpec extends Specification {
     def "should return single process result in collection when csv is loaded from resources as input stream"() {
 
         when: "loading input stream from file"
-        def file = new File("src/test/resources/practices/gp_practices_england_wales_100.csv")
+        def file = new File("src/test/resources/practices/gp_practices_england_wales_6001_end.csv")
 
         and: "processing template"
         file.withInputStream { stream ->

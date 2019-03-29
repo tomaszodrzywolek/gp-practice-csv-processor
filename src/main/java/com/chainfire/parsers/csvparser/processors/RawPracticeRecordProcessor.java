@@ -1,6 +1,7 @@
 package com.chainfire.parsers.csvparser.processors;
 
 import com.chainfire.parsers.converters.LocationConverter;
+import com.chainfire.parsers.helpers.JSON;
 import com.chainfire.parsers.models.GpPractice;
 import com.chainfire.parsers.models.Location;
 import com.chainfire.parsers.models.LocationDetails;
@@ -10,6 +11,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.NoSuchElementException;
 
 public class RawPracticeRecordProcessor implements CsvRecordProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(RawPracticeRecordProcessor.class);
@@ -21,10 +24,14 @@ public class RawPracticeRecordProcessor implements CsvRecordProcessor {
     public RecordResult process(CSVRecord record) {
         if (isActivePractice(record)) {
             GpPractice practice = createPractice(record);
-            Location location = getLocation(practice);
-            practice.setLocation(setLocationDetails(location));
+            try {
+                Location location = getLocation(practice);
+                practice.setLocation(setLocationDetails(location));
 
-            return new RecordResult(practice, location);
+                return new RecordResult(practice, location);
+            } catch (Exception e) {
+                return new RecordResult(practice);
+            }
         }
         return null;
     }
@@ -33,14 +40,14 @@ public class RawPracticeRecordProcessor implements CsvRecordProcessor {
         ObjectNode practiceResponse = locationService.locatePractice(practice);
 
         Location location = locationConverter.toLocation(practiceResponse);
-        if (location != null) {
-            location.setPracticeOrganisationCode(practice.getOrganisationCode());
-            location.setPracticeName(practice.getName());
-        }
+        location.setPracticeOrganisationCode(practice.getOrganisationCode());
+        location.setPracticeName(practice.getName());
+
         return location;
     }
 
     private LocationDetails setLocationDetails(Location location) {
+        checkForNulls(location);
         LocationDetails locationDetails = new LocationDetails();
         locationDetails.setLocationId(location.getLocationId());
         locationDetails.setLatitude(location.getDisplayPosition().getLatitude());
@@ -48,6 +55,15 @@ public class RawPracticeRecordProcessor implements CsvRecordProcessor {
         locationDetails.setAddress(location.getAddress());
 
         return locationDetails;
+    }
+
+    private void checkForNulls(Location location) {
+        if (location.getLocationId() == null ||
+                location.getDisplayPosition() == null ||
+                location.getAddress() == null) {
+            LOGGER.error(JSON.toJsonPretty(location));
+            throw new NoSuchElementException();
+        }
     }
 
     private GpPractice createPractice(CSVRecord record) {

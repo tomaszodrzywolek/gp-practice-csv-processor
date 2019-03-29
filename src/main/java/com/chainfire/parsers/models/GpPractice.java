@@ -21,7 +21,7 @@ public class GpPractice {
     private String phoneNumber;
     private String email;
     private String type = "G";
-    private LocationDetails location = new LocationDetails();
+    private LocationDetails location;
     private boolean isRegistered;
 
     public List<String> asList() {

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.NoSuchElementException;
+
 public class LocationConverter {
 
 
@@ -13,10 +15,10 @@ public class LocationConverter {
                 .with("Response")
                 .withArray("View");
 
-        if (views.has(0)) {
+        if (views.hasNonNull(0)) {
             return convertToLocation((ObjectNode) views.get(0));
         }
-        return null;
+        throw new NoSuchElementException("Practice not found");
     }
 
     private Location convertToLocation(ObjectNode view) {
