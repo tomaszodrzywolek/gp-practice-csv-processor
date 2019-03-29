@@ -32,6 +32,7 @@ public class CsvTemplateProcessor {
 
         } catch (Exception e) {
             LOGGER.debug("Error processing csv file");
+            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
     }
