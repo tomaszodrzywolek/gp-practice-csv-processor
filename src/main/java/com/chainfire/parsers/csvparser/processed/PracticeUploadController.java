@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 @RestController("/upload")
 public class PracticeUploadController {
@@ -20,13 +19,9 @@ public class PracticeUploadController {
     }
 
     @PostMapping
-    public ResponseEntity<List<ProcessedGpPractice>> uploadPracticeData(@RequestBody String filepath) throws FileNotFoundException {
-        List<ProcessedGpPractice> practices = uploadService.uploadPracticeData(filepath);
+    public ResponseEntity<?> uploadPracticeData(@RequestBody String filepath) throws FileNotFoundException {
 
-        return ResponseEntity.ok(practices);
-
-
-
+        return uploadService.uploadPracticeData(filepath);
     }
 
 

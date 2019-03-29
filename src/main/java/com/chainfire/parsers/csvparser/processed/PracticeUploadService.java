@@ -1,6 +1,7 @@
 package com.chainfire.parsers.csvparser.processed;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -12,18 +13,19 @@ import java.util.List;
 public class PracticeUploadService {
 
     private PracticeCsvProcessor csvProcessor;
+    private PracticeDataUploader dataUploader;
 
     @Autowired
-    public PracticeUploadService(PracticeCsvProcessor csvProcessor) {
+    public PracticeUploadService(PracticeCsvProcessor csvProcessor, PracticeDataUploader dataUploader) {
         this.csvProcessor = csvProcessor;
+        this.dataUploader = dataUploader;
     }
 
-    public List<ProcessedGpPractice> uploadPracticeData(String filepath) throws FileNotFoundException {
+    public ResponseEntity<?> uploadPracticeData(String filepath) throws FileNotFoundException {
         FileInputStream csvIs = readFile(filepath);
         List<ProcessedGpPractice> practices = csvProcessor.processCsvTemplate(csvIs);
 
-        return practices;
-
+        return dataUploader.uploadPractices(practices);
     }
 
     private FileInputStream readFile(String filepath) throws FileNotFoundException {

@@ -1,6 +1,5 @@
 package com.chainfire.parsers.converters;
 
-import com.chainfire.parsers.helpers.JSON;
 import com.chainfire.parsers.models.Location;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
