@@ -17,8 +17,9 @@ public class RecordWriter {
                 BufferedWriter practiceWriter = Files.newBufferedWriter(Paths.get("./practice_results_100.csv"));
 
                 CSVPrinter practiceCsvPrinter = new CSVPrinter(practiceWriter, CSVFormat.DEFAULT
-                        .withHeader("Organisation Code", "Name", "Address1", "Address2", "Address3", "Address4", "Address5",
-                                "Post Code", "Phone Number", "Email", "LocationId", "Latitude", "Longitude"));
+                        .withHeader("Organisation Code", "Name", "House Number", "Street", "City", "State", "County",
+                                "District", "Postal Code", "Country", "Phone Number", "Email", "Type", "LocationId",
+                                "Latitude", "Longitude"));
 
                 BufferedWriter locationWriter = Files.newBufferedWriter(Paths.get("./location_results_100.csv"));
 

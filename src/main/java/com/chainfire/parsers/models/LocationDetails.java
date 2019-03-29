@@ -10,4 +10,5 @@ public class LocationDetails {
     private Double latitude;
     private Double longitude;
     private String locationId;
+    private Address address;
 }

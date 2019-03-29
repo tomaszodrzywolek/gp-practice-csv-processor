@@ -11,8 +11,8 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PracticeRecordProcessor implements CsvRecordProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PracticeRecordProcessor.class);
+public class RawPracticeRecordProcessor implements CsvRecordProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RawPracticeRecordProcessor.class);
 
     private LocationService locationService = new LocationService();
     private LocationConverter locationConverter = new LocationConverter();
@@ -45,6 +45,7 @@ public class PracticeRecordProcessor implements CsvRecordProcessor {
         locationDetails.setLocationId(location.getLocationId());
         locationDetails.setLatitude(location.getDisplayPosition().getLatitude());
         locationDetails.setLongitude(location.getDisplayPosition().getLongitude());
+        locationDetails.setAddress(location.getAddress());
 
         return locationDetails;
     }

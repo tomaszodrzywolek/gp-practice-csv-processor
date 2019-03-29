@@ -1,6 +1,5 @@
 package com.chainfire.parsers.models;
 
-import com.chainfire.parsers.helpers.JSON;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +20,7 @@ public class GpPractice {
     private String postcode;
     private String phoneNumber;
     private String email;
+    private String type = "G";
     private LocationDetails location = new LocationDetails();
     private boolean isRegistered;
 
@@ -28,14 +28,17 @@ public class GpPractice {
         return Arrays.asList(
                 organisationCode,
                 name,
-                checkAndReturn(address1),
-                checkAndReturn(address2),
-                checkAndReturn(address3),
-                checkAndReturn(address4),
-                checkAndReturn(address5),
-                checkAndReturn(postcode),
+                location != null ? checkAndReturn(location.getAddress().getHouseNumber()) : "",
+                location != null ? checkAndReturn(location.getAddress().getStreet()) : "",
+                location != null ? checkAndReturn(location.getAddress().getCity()) : "",
+                location != null ? checkAndReturn(location.getAddress().getState()) : "",
+                location != null ? checkAndReturn(location.getAddress().getCounty()) : "",
+                location != null ? checkAndReturn(location.getAddress().getDistrict()) : "",
+                location != null ? checkAndReturn(location.getAddress().getPostalCode()) : "",
+                location != null ? checkAndReturn(location.getAddress().getCountry()) : "",
                 checkAndReturn(phoneNumber),
                 checkAndReturn(email),
+                type,
                 location != null ? checkAndReturn(location.getLocationId()) : "",
                 location != null ? checkAndReturn(Double.toString(location.getLatitude())) : "",
                 location != null ? checkAndReturn(Double.toString(location.getLongitude())) : "");
